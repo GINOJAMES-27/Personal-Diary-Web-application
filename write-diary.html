@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write Diary</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #5579f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 2.5em;
+      color: #1f2937; 
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    form {
+      background-color: lightblue;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    label {
+      font-size: 1.1em;
+      color: #34495e;
+      font-weight: bold;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      resize: vertical;
+      min-height: 150px;
+      transition: border-color 0.3s ease;
+    }
+
+    textarea:focus {
+      border-color: #6366f1;
+      outline: none;
+    }
+
+    button {
+      padding: 12px;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 8px;
+      background-color: #6366f1;
+      font-size: 1.1em;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: rgb(3, 158, 3);
+    }
+
+    p {
+      margin-top: 20px;
+      color: #777;
+      text-align: center;
+      font-size: 1em;
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: black;
+      
+    }
+  </style>
+</head>
+<body>
+  <h2>Write Diary</h2>
+  <form id="diaryForm">
+    <label for="entry">Diary Entry</label>
+    <textarea id="entry" name="entry" rows="10" required></textarea>
+    <button type="submit">Submit</button>
+  </form>
+
+  <p><a href="/home">Back to Home</a></p> 
+
+  <script>
+    document.getElementById('diaryForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const entry = document.getElementById('entry').value;
+
+      const response = await fetch('/write-diary', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ entry })
+      });
+
+      if (response.ok) {
+        alert('Diary entry added successfully!');
+        document.getElementById('diaryForm').reset(); 
+      } else {
+        const errorMessage = await response.text();
+        alert('Failed to add diary entry: ' + errorMessage);
+      }
+    });
+  </script>
+</body>
+</html>
